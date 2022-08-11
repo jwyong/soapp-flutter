@@ -1,0 +1,57 @@
+{
+  "ok": "Ok",
+  "cancel": "Cancel",
+  "submit": "Submit",
+  "next": "Next",
+  "loading": "Loading...",
+  "seen": "Seen",
+
+  "yesterday": "Yesterday",
+  "today": "Today",
+  "tomorrow": "Tomorrow",
+
+  "vld_phone_empty": "Phone number must not be empty",
+  "vld_phone_invalid": "This phone number is invalid",
+
+  "error_generic": "Something went wrong, please try again later",
+
+  "open_settings": "Open Settings",
+  "perms_denied": "Permissions denied",
+  "perms_contacts_required": "Soapp requires contacts access permissions in order to sync contacts.",
+
+  "phone_number": "Phone Number",
+  "input_phone_number": "What's your phone number?",
+  "send_otp": "Send Confirmation Code",
+  "agree_terms_1": "I agree to the ",
+  "agree_terms_2": "Terms & Conditions",
+
+  "enter_otp": "Please enter the 6-digit OTP",
+  "otp": "OTP",
+  "select_image": "Select Image",
+  "input_profile_name": "What's your profile name?",
+
+  "sync_desc_1": "Soapp requires contacts permissions to connect you to your friends who are already on Soapp.",
+  "sync_desc_2": "If you are a returning user, we will also retrieve previously joined groups.",
+  "start_sync": "Sync Contacts Now",
+
+  "soapp": "Soapp",
+  "discover": "Discover",
+  "chat": "Chat",
+  "appt": "Appointment",
+  "profile": "Profile",
+
+  "start_chat_now": "Start chatting now!",
+  "new_chat": "New Chat",
+  "new_grp": "New Group",
+
+  "create_new_grp": "Create New Group",
+  "input_grp_name": "What's the group name?",
+  "you_created_grp": "You have created the group",
+  "grp_has_been_created": "The group has been created",
+
+  "type_msg_here": "Type your message here",
+  "selected": "Selected",
+
+  "invite_friends": "Invite your friends to Soapp to starting chatting!",
+  "contacts_sync_success": "Contacts successfully synced!"
+}
