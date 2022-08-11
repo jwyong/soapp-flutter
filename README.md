@@ -1,7 +1,7 @@
-# soapp
+# Soapp
 
 Soapp - Extending Possibilities
 
-## Getting Started
+## All-in-one mobile chat application
 
 Chat with friends, search for restaurants for meet-ups, and schedule appointments all in one app.
