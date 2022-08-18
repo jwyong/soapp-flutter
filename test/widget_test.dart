@@ -1,9 +1,9 @@
-// This is a basic Flutter screens test.
+// This is a basic Flutter views test.
 //
-// To perform an interaction with a screens in your test, use the WidgetTester
+// To perform an interaction with a views in your test, use the WidgetTester
 // utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child screens in the screens
-// tree, read text, and verify that the values of screens properties are correct.
+// gestures. You can also use WidgetTester to find child views in the views
+// tree, read text, and verify that the values of views properties are correct.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
