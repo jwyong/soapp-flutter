@@ -6,7 +6,11 @@ abstract class BaseStatelessWidget extends StatelessWidget with BaseFunctions {
   const BaseStatelessWidget({ Key? key }) : super(key: key);
 }
 
-mixin BaseFunctions on StatelessWidget { // you can also constrain the mixin to specific classes using on in this line.
+abstract class BaseStatefulWidget extends StatefulWidget with BaseFunctions {
+  const BaseStatefulWidget({ Key? key }) : super(key: key);
+}
+
+mixin BaseFunctions on Widget { // you can also constrain the mixin to specific classes using on in this line.
   // get localised string based on string name
   AppLocalizations? getString(BuildContext context) {
     // Add web view logic here. We can add variables to the mixin itself as well.
@@ -35,4 +39,8 @@ mixin BaseFunctions on StatelessWidget { // you can also constrain the mixin to 
   double respHeightPercent(double percent) {
     return ScreenUtil().screenHeight * (percent/100);
   }
+}
+
+mixin FormsFunctions on StatelessWidget {
+
 }
