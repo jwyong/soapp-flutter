@@ -28,7 +28,7 @@ class ButtonWidget extends BaseStatelessWidget {
           onPressed: onPressed,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 15),
-            child: Text(label ?? "",
+            child: Text(label?.toUpperCase() ?? "",
                 style: getStyle(context)
                     .bodyLarge
                     ?.apply(color: white, fontFamily: fontQuicksandBook)),

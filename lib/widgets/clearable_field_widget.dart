@@ -10,7 +10,7 @@ class ClearableFieldWidget extends BaseStatefulWidget {
   final Color? fillColour;
   final int? maxLength;
   final String? hintText;
-  final String? initialText;
+  final TextEditingController? controller;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final FormFieldValidator<String>? validator;
@@ -23,25 +23,24 @@ class ClearableFieldWidget extends BaseStatefulWidget {
   final IconButton? prefixIcon;
   final TextCapitalization? textCapitalization;
 
-  const ClearableFieldWidget(
-      {Key? key,
-      this.hintText,
-      this.maxLength,
-      this.maxLines,
-      this.autoFocus,
-      this.onChanged,
-      this.fillColour,
-      this.initialText,
-      this.focusNode,
-      this.textInputAction,
-      this.validator,
-      this.onFieldSubmitted,
-      this.onSaved,
-      this.keyboardType,
-      this.inputFormatters,
-      this.obscureText,
-      this.prefixIcon,
-      this.textCapitalization})
+  const ClearableFieldWidget({Key? key,
+    this.hintText,
+    this.maxLength,
+    this.maxLines,
+    this.autoFocus,
+    this.onChanged,
+    this.fillColour,
+    this.controller,
+    this.focusNode,
+    this.textInputAction,
+    this.validator,
+    this.onFieldSubmitted,
+    this.onSaved,
+    this.keyboardType,
+    this.inputFormatters,
+    this.obscureText,
+    this.prefixIcon,
+    this.textCapitalization})
       : super(key: key);
 
   @override
@@ -49,11 +48,12 @@ class ClearableFieldWidget extends BaseStatefulWidget {
 }
 
 class _State extends State<ClearableFieldWidget> {
-  final TextEditingController controller = TextEditingController();
   bool shouldShowClearBtn = false;
+  late TextEditingController controller;
 
   @override
   void initState() {
+    controller = widget.controller?? TextEditingController();
     controller.addListener(() {
       if (controller.text.isNotEmpty != shouldShowClearBtn) {
         shouldShowClearBtn = controller.text.isNotEmpty;
@@ -71,7 +71,7 @@ class _State extends State<ClearableFieldWidget> {
       onSaved: widget.onSaved,
       maxLength: widget.maxLength,
       maxLines: widget.maxLines,
-      autofocus: widget.autoFocus ?? true,
+      autofocus: widget.autoFocus ?? false,
       obscureText: widget.obscureText ?? false,
       focusNode: widget.focusNode,
       textCapitalization: widget.textCapitalization ?? TextCapitalization.words,
@@ -80,18 +80,19 @@ class _State extends State<ClearableFieldWidget> {
       validator: widget.validator,
       onFieldSubmitted: widget.onFieldSubmitted,
       textInputAction: widget.textInputAction,
-      style: widget.getStyle(context).subtitle1,
+      style: widget
+          .getStyle(context)
+          .subtitle1,
       keyboardType: widget.keyboardType,
-      initialValue: widget.initialText,
       decoration: getInputDecoration(
           suffixIcon: controller.text.isNotEmpty
               ? IconButton(
-                  color: grey9,
-                  icon: const Icon(Icons.clear_rounded),
-                  onPressed: () {
-                    controller.clear();
-                    widget.onChanged?.call(controller.text);
-                  })
+              color: grey9,
+              icon: const Icon(Icons.clear_rounded),
+              onPressed: () {
+                controller.clear();
+                widget.onChanged?.call(controller.text);
+              })
               : null,
           prefixIcon: widget.prefixIcon,
           hintText: widget.hintText,
@@ -99,12 +100,11 @@ class _State extends State<ClearableFieldWidget> {
     );
   }
 
-  InputDecoration getInputDecoration(
-      {IconButton? suffixIcon,
-      IconButton? prefixIcon,
-      Color? fillColour,
-      String? hintText,
-      String? errorTxt}) {
+  InputDecoration getInputDecoration({IconButton? suffixIcon,
+    IconButton? prefixIcon,
+    Color? fillColour,
+    String? hintText,
+    String? errorTxt}) {
     OutlineInputBorder border = OutlineInputBorder(
         borderRadius: BorderRadius.circular(formRadius),
         borderSide: const BorderSide(color: Colors.transparent));
@@ -121,7 +121,10 @@ class _State extends State<ClearableFieldWidget> {
       hintText: hintText,
       errorText: errorTxt,
       labelStyle: const TextStyle(backgroundColor: grey1, color: grey8),
-      hintStyle: widget.getStyle(context).subtitle1?.apply(color: grey8),
+      hintStyle: widget
+          .getStyle(context)
+          .subtitle1
+          ?.apply(color: grey8),
       filled: true,
       contentPadding: const EdgeInsets.symmetric(
           horizontal: formPaddingHori, vertical: formPaddingVerti),

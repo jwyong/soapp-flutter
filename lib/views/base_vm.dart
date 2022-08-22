@@ -1,4 +1,17 @@
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
+
 class BaseVM {
+  /// sharedPrefs
+  EncryptedSharedPreferences encSP = EncryptedSharedPreferences();
+
+  getSpStringFuture(String key) => encSP.getString(key);
+  setSpString(String key, value) {
+    encSP.setString(key, value.toString());
+  }
+
+  // get sp bool from str
+  getSpBool(String boolStr) => boolStr == "true";
+
   Map<int, String> formData = {};
 
 //===== formData (onSaved)
@@ -15,12 +28,14 @@ class BaseVM {
     if (val != null) formData[2] = val;
   }
 
+  String getFormData(int index) => formData[index] ?? '';
+
 //===== validation
 //   String validateEmpty(String value) {
-    // if (value.isEmpty) {
-    //   return StringVals.getString(StringVals.PHONE_EMPTY);
-    // } else {
-    //   return null;
-    // }
-  // }
+// if (value.isEmpty) {
+//   return StringVals.getString(StringVals.PHONE_EMPTY);
+// } else {
+//   return null;
+// }
+// }
 }

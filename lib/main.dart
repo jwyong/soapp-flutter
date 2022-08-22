@@ -16,8 +16,6 @@ class Soapp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("JAY_LOG: Soapp, build, ");
-
     return MultiProvider(
         providers: _getProviders(context),
         child: MaterialApp(

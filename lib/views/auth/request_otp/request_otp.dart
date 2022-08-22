@@ -19,9 +19,8 @@ class RequestOtpScreen extends BaseStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("JAY_LOG: RequestOtpScreen, build, ");
-
     final RequestOtpVM vm = Provider.of(context, listen: false);
+    vm.initFormData();
 
     return Scaffold(
         body: Container(
@@ -120,7 +119,7 @@ class _PhoneNumberFormWidget extends BaseStatelessWidget {
                   flex: 8,
                   child: ClearableFieldWidget(
                       hintText: getString(context)?.phone_number ?? "",
-                      initialText: vm.formData[1],
+                      controller: vm.phoneNumberController,
                       onChanged: vm.phoneNumberFieldOnChange,
                       maxLength: 12,
                       textInputAction: TextInputAction.done,
@@ -153,16 +152,16 @@ class _TermsCheckboxWidget extends BaseStatelessWidget {
           text: TextSpan(children: [
             TextSpan(
                 recognizer: TapGestureRecognizer()
-                  ..onTap = vm.termsCheckboxOnTap,
+                  ..onTap = vm.termsCheckboxOnChange(null),
                 text: getString(context)?.agree_terms_1 ?? "",
-                style: const TextStyle(color: black)),
+                style: getStyle(context).bodyMedium),
             TextSpan(
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     // launch(GlobalVars.terms);
                   },
                 text: getString(context)?.agree_terms_2 ?? "",
-                style: const TextStyle(color: primaryDark4))
+                style: getStyle(context).bodyMedium?.apply(color: primaryDark4))
           ]),
         ),
       ],
