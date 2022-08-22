@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:soapp/utils/routes.dart';
+import 'package:soapp/views/home/home.dart';
 import 'utils/colors.dart';
 import 'utils/constants.dart';
 import 'views/auth/request_otp/request_otp_vm.dart';
@@ -31,6 +33,11 @@ class Soapp extends StatelessWidget {
             fontFamily: fontQuicksandBook,
             primaryColor: primary,
           ),
+
+          // route
+          routes: {
+            routeHome: (context) => Home(),
+          },
 
           // home
           home: const RequestOtpScreen(),

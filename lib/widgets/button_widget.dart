@@ -31,7 +31,7 @@ class ButtonWidget extends BaseStatelessWidget {
             child: Text(label?.toUpperCase() ?? "",
                 style: getStyle(context)
                     .bodyLarge
-                    ?.apply(color: white, fontFamily: fontQuicksandBook)),
+                    ?.apply(color: white, fontFamily: fontQuicksandBold)),
           )),
     );
   }

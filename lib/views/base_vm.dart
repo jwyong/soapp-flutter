@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class BaseVM {
   /// sharedPrefs
   EncryptedSharedPreferences encSP = EncryptedSharedPreferences();
 
   getSpStringFuture(String key) => encSP.getString(key);
+
   setSpString(String key, value) {
     encSP.setString(key, value.toString());
   }
@@ -14,7 +19,7 @@ class BaseVM {
 
   Map<int, String> formData = {};
 
-//===== formData (onSaved)
+  /// formData
 // save value to var for each form field
   void setFormData0(String? val) {
     if (val != null) formData[0] = val;
@@ -30,12 +35,22 @@ class BaseVM {
 
   String getFormData(int index) => formData[index] ?? '';
 
-//===== validation
-//   String validateEmpty(String value) {
-// if (value.isEmpty) {
-//   return StringVals.getString(StringVals.PHONE_EMPTY);
-// } else {
-//   return null;
-// }
-// }
+  /// route navigation
+  navigateTo(BuildContext context, String routeName,
+      {bool shouldClosePrevious = false}) {
+    if (shouldClosePrevious) {
+      Navigator.pushReplacementNamed(context, routeName);
+    } else {
+      Navigator.pushNamed(context, routeName);
+    }
+  }
+
+  /// snackbar
+  showSnackbar(BuildContext context, String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
+
+  delayMs(int milliSeconds, void Function() function) {
+    Timer(Duration(milliseconds: milliSeconds), function);
+  }
 }

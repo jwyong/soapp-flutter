@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
 
@@ -7,6 +8,7 @@ import 'package:country_picker/src/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:soapp/models/auth/CountryCode.dart';
 import 'package:soapp/utils/constants.dart';
+import 'package:soapp/utils/routes.dart';
 import 'package:soapp/views/base_vm.dart';
 
 class RequestOtpVM extends BaseVM with ChangeNotifier {
@@ -103,7 +105,9 @@ class RequestOtpVM extends BaseVM with ChangeNotifier {
 
   // submitBtn - show toast and navigate to home
   // TODO: full auth flow soon
-  submitBtnOnPressed() {
+  submitBtnOnPressed(BuildContext context) {
+    showSnackbar(context, 'formData: ${getFormData(0)}, ${getFormData(1)}');
 
+    navigateTo(context, routeHome, shouldClosePrevious: true);
   }
 }

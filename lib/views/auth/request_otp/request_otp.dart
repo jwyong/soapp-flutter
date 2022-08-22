@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:soapp/utils/routes.dart';
 
 import '../../../utils/colors.dart';
 import '../../../utils/constants.dart';
@@ -64,7 +65,9 @@ class RequestOtpScreen extends BaseStatelessWidget {
                   Consumer<RequestOtpVM>(builder: (context, vm, _) {
                     return ButtonWidget(
                       getString(context)?.send_otp,
-                      vm.isSubmitBtnEnabled ? vm.submitBtnOnPressed : null,
+                      vm.isSubmitBtnEnabled ? () {
+                        vm.submitBtnOnPressed(context);
+                      } : null,
                     );
                   }),
 
