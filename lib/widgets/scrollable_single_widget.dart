@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:soapp/widgets/BaseStatelessWidget.dart';
+import 'package:soapp/widgets/base_stateless_widget.dart';
 
 class ScrollableSingleWidget extends BaseStatelessWidget {
-  final Widget child;
-  final EdgeInsets? padding;
-
   const ScrollableSingleWidget({Key? key, required this.child, this.padding})
       : super(key: key);
+  final Widget child;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(onTap: () {
       FocusScope.of(context).requestFocus(FocusNode());
-    },
-        // child: SafeArea(
-        child: LayoutBuilder(
+    }, child: SafeArea(child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
       return SingleChildScrollView(
         child: ConstrainedBox(
@@ -29,6 +26,6 @@ class ScrollableSingleWidget extends BaseStatelessWidget {
       );
     })
         // ),
-        );
+        ));
   }
 }

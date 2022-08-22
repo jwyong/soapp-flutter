@@ -11,6 +11,5 @@ const double btnFontSize = 16;
 // form
 const double formRadius = 30;
 const double formFlagSize = 20;
-const double formFontSize = 16;
 const double formPaddingVerti = 20;
 const double formPaddingHori = 20;

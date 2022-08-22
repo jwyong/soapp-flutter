@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:soapp/widgets/BaseStatelessWidget.dart';
+import 'package:soapp/widgets/base_stateless_widget.dart';
 
 class ExpandedWidget extends BaseStatelessWidget {
   final int flex;
@@ -13,7 +12,7 @@ class ExpandedWidget extends BaseStatelessWidget {
     return Expanded(
       flex: flex,
       child: SizedBox(
-        height: respHeight(minHeight),
+        height: minHeight,
       ),
     );
   }

@@ -19,6 +19,7 @@
   "perms_denied": "Permissions denied",
   "perms_contacts_required": "Soapp requires contacts access permissions in order to sync contacts.",
 
+  "country_not_found": "Country not found",
   "phone_number": "Phone Number",
   "input_phone_number": "What's your phone number?",
   "send_otp": "Send Confirmation Code",
@@ -34,7 +35,6 @@
   "sync_desc_2": "If you are a returning user, we will also retrieve previously joined groups.",
   "start_sync": "Sync Contacts Now",
 
-  "soapp": "Soapp",
   "discover": "Discover",
   "chat": "Chat",
   "appt": "Appointment",

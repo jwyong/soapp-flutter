@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../utils/colors.dart';
 import '../utils/dimensions.dart';
-import 'BaseStatelessWidget.dart';
+import 'base_stateless_widget.dart';
 
 class ClearableFieldWidget extends BaseStatefulWidget {
   final bool? autoFocus;
@@ -17,6 +17,7 @@ class ClearableFieldWidget extends BaseStatefulWidget {
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onFieldSubmitted;
   final FormFieldSetter<String>? onSaved;
+  final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final bool? obscureText;
   final IconButton? prefixIcon;
@@ -36,6 +37,7 @@ class ClearableFieldWidget extends BaseStatefulWidget {
       this.validator,
       this.onFieldSubmitted,
       this.onSaved,
+      this.keyboardType,
       this.inputFormatters,
       this.obscureText,
       this.prefixIcon,
@@ -48,19 +50,22 @@ class ClearableFieldWidget extends BaseStatefulWidget {
 
 class _State extends State<ClearableFieldWidget> {
   final TextEditingController controller = TextEditingController();
-  var shouldShowClearBtn = false;
+  bool shouldShowClearBtn = false;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     controller.addListener(() {
       if (controller.text.isNotEmpty != shouldShowClearBtn) {
         shouldShowClearBtn = controller.text.isNotEmpty;
         setState(() {});
       }
     });
+    super.initState();
+  }
 
-    return Expanded(
-        child: TextFormField(
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
       controller: controller,
       onChanged: widget.onChanged,
       onSaved: widget.onSaved,
@@ -75,9 +80,10 @@ class _State extends State<ClearableFieldWidget> {
       validator: widget.validator,
       onFieldSubmitted: widget.onFieldSubmitted,
       textInputAction: widget.textInputAction,
-      style: TextStyle(fontSize: widget.respSP(16)),
+      style: widget.getStyle(context).subtitle1,
+      keyboardType: widget.keyboardType,
       initialValue: widget.initialText,
-      decoration: formFieldInputDeco(
+      decoration: getInputDecoration(
           suffixIcon: controller.text.isNotEmpty
               ? IconButton(
                   color: grey9,
@@ -89,16 +95,20 @@ class _State extends State<ClearableFieldWidget> {
               : null,
           prefixIcon: widget.prefixIcon,
           hintText: widget.hintText,
-          fillColour: widget.fillColour),
-    ));
+          fillColour: widget.fillColour ?? grey1),
+    );
   }
 
-  InputDecoration formFieldInputDeco(
+  InputDecoration getInputDecoration(
       {IconButton? suffixIcon,
       IconButton? prefixIcon,
       Color? fillColour,
       String? hintText,
       String? errorTxt}) {
+    OutlineInputBorder border = OutlineInputBorder(
+        borderRadius: BorderRadius.circular(formRadius),
+        borderSide: const BorderSide(color: Colors.transparent));
+
     return InputDecoration(
       alignLabelWithHint: true,
       errorStyle: const TextStyle(
@@ -111,20 +121,13 @@ class _State extends State<ClearableFieldWidget> {
       hintText: hintText,
       errorText: errorTxt,
       labelStyle: const TextStyle(backgroundColor: grey1, color: grey8),
-      hintStyle: TextStyle(color: grey8, fontSize: widget.respSP(formFontSize)),
+      hintStyle: widget.getStyle(context).subtitle1?.apply(color: grey8),
       filled: true,
-      contentPadding: EdgeInsets.symmetric(
-          horizontal: widget.respWidth(formPaddingHori),
-          vertical: widget.respHeight(formPaddingVerti)),
-      focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.respWidth(formRadius)),
-          borderSide: const BorderSide(color: Colors.transparent)),
-      border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.respWidth(formRadius)),
-          borderSide: const BorderSide(color: Colors.transparent)),
-      enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.respWidth(formRadius)),
-          borderSide: const BorderSide(color: Colors.transparent)),
+      contentPadding: const EdgeInsets.symmetric(
+          horizontal: formPaddingHori, vertical: formPaddingVerti),
+      focusedBorder: border,
+      border: border,
+      enabledBorder: border,
     );
   }
 }

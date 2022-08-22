@@ -1,45 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:soapp/utils/colors.dart';
-import 'package:soapp/utils/constants.dart';
-import 'package:soapp/views/auth/request_otp/RequestOtpVM.dart';
-import 'package:soapp/views/auth/request_otp/request_otp.dart';
+import 'utils/colors.dart';
+import 'utils/constants.dart';
+import 'views/auth/request_otp/request_otp_vm.dart';
+import 'views/auth/request_otp/request_otp.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const Soapp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Soapp extends StatelessWidget {
+  const Soapp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(builder: (context, child) {
-      return MultiProvider(
-          providers: getProviders(context),
-          child: MaterialApp(
-            title: "Soapp",
+    debugPrint("JAY_LOG: Soapp, build, ");
 
-            // localisation
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
+    return MultiProvider(
+        providers: _getProviders(context),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Soapp',
 
-            // theme
-            theme: ThemeData(
-              fontFamily: fontQuicksandBook,
-              primaryColor: primary,
-            ),
+          // localisation
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
 
-            // home
-            home: const RequestOtpScreen(),
-          ));
-    });
+          // theme
+          theme: ThemeData(
+            fontFamily: fontQuicksandBook,
+            primaryColor: primary,
+          ),
+
+          // home
+          home: const RequestOtpScreen(),
+        ));
   }
 
-  List<SingleChildWidget> getProviders(BuildContext context) {
+  List<SingleChildWidget> _getProviders(BuildContext context) {
     return [ChangeNotifierProvider.value(value: RequestOtpVM())];
   }
 }

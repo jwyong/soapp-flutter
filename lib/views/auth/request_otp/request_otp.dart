@@ -1,15 +1,18 @@
+import 'package:country_picker/country_picker.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:soapp/utils/dimensions.dart';
-import 'package:soapp/views/auth/request_otp/RequestOtpVM.dart';
-import 'package:soapp/widgets/ClearableFieldWidget.dart';
-import 'package:soapp/widgets/ExpandedWidget.dart';
-import 'package:soapp/widgets/TextWidget.dart';
 
-import '../../../widgets/BaseStatelessWidget.dart';
-import '../../../widgets/ButtonWidget.dart';
-import '../../../widgets/ScrollableSingleWidget.dart';
+import '../../../utils/colors.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/dimensions.dart';
+import '../../../widgets/base_stateless_widget.dart';
+import '../../../widgets/button_widget.dart';
+import '../../../widgets/clearable_field_widget.dart';
+import '../../../widgets/expanded_widget.dart';
+import '../../../widgets/scrollable_single_widget.dart';
+import 'request_otp_vm.dart';
 
 class RequestOtpScreen extends BaseStatelessWidget {
   const RequestOtpScreen({Key? key}) : super(key: key);
@@ -17,6 +20,7 @@ class RequestOtpScreen extends BaseStatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint("JAY_LOG: RequestOtpScreen, build, ");
+
     final RequestOtpVM vm = Provider.of(context, listen: false);
 
     return Scaffold(
@@ -29,63 +33,39 @@ class RequestOtpScreen extends BaseStatelessWidget {
                     fit: BoxFit.cover,
                     alignment: Alignment.topCenter)),
             child: ScrollableSingleWidget(
-              padding:
-                  EdgeInsets.symmetric(horizontal: respWidth(mainPaddingHori)),
+              padding: const EdgeInsets.symmetric(horizontal: mainPaddingHori),
               child: Column(
                 children: <Widget>[
                   // space
                   const ExpandedWidget(25, 20),
 
                   // soapp word logo
-                  Image(
-                    image: const AssetImage("assets/logo/words_white.png"),
-                    width: respWidthPercent(35),
-                  ),
+                  const FractionallySizedBox(
+                      widthFactor: 0.35,
+                      child: Image(
+                        image: AssetImage("assets/logo/words_white.png"),
+                      )),
 
                   const ExpandedWidget(55, 20),
 
                   // what's your phone number?
-                  TextWidget(getString(context)?.input_phone_number, 20),
-                  SizedBox(height: respHeight(10)),
+                  Text(getString(context)?.input_phone_number ?? "",
+                      style: getStyle(context).headline6),
+                  const SizedBox(height: 10),
 
-                  // form
-                  Form(
-                    key: vm.formKey,
-                    child: Row(
-                      children: <Widget>[
-                        // 1 - country code
-                        // countryCode(),
-                        // SizedBox(width: respWidth(10)),
-
-                        // 2 - phone
-                        ClearableFieldWidget(
-                          hintText: getString(context)?.phone_number ?? "",
-                          initialText: vm.formData[2],
-                          onChanged: vm.formFieldOnChanged,
-                          maxLength: 12,
-                          textInputAction: TextInputAction.done,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  // phone number form
+                  _PhoneNumberFormWidget(vm),
 
                   const ExpandedWidget(12, 10),
 
-                  // checkbox
-                  // termsCheckbox(),
+                  // terms and conditions checkbox
+                  _TermsCheckboxWidget(vm),
 
                   // submit btn
                   Consumer<RequestOtpVM>(builder: (context, vm, _) {
-                    debugPrint("JAY_LOG: RequestOtpScreen, build, onChange "
-                        "isBtnEnabled = ${vm.isBtnEnabled}");
-
                     return ButtonWidget(
                       getString(context)?.send_otp,
-                      vm.isBtnEnabled?
-                      vm.submitBtnOnPressed : null,
+                      vm.isSubmitBtnEnabled ? vm.submitBtnOnPressed : null,
                     );
                   }),
 
@@ -93,5 +73,99 @@ class RequestOtpScreen extends BaseStatelessWidget {
                 ],
               ),
             )));
+  }
+}
+
+/// ccp + phone number form
+class _PhoneNumberFormWidget extends BaseStatelessWidget {
+  const _PhoneNumberFormWidget(this.vm);
+
+  final RequestOtpVM vm;
+
+  @override
+  Widget build(BuildContext context) {
+    final OutlineInputBorder border = OutlineInputBorder(
+        borderRadius: BorderRadius.circular(formRadius),
+        borderSide: const BorderSide(color: Colors.transparent));
+
+    return Form(
+        key: vm.formKey,
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // 1 - country code
+              Flexible(
+                  flex: 4,
+                  child: TextFormField(
+                      readOnly: true,
+                      controller: vm.ccpController,
+                      onTap: () {
+                        showCountryPicker(
+                            context: context,
+                            showPhoneCode: true,
+                            favorite: favoritesCCP,
+                            onSelect: vm.ccpOnSelect);
+                      },
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: grey1,
+                        enabledBorder: border,
+                        focusedBorder: border,
+                      ))),
+
+              const SizedBox(width: 10),
+
+              // 2 - phone
+              Flexible(
+                  flex: 8,
+                  child: ClearableFieldWidget(
+                      hintText: getString(context)?.phone_number ?? "",
+                      initialText: vm.formData[1],
+                      onChanged: vm.phoneNumberFieldOnChange,
+                      maxLength: 12,
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly
+                      ]))
+            ]));
+  }
+}
+
+/// terms and conditions checkbox
+class _TermsCheckboxWidget extends BaseStatelessWidget {
+  const _TermsCheckboxWidget(this.vm);
+
+  final RequestOtpVM vm;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Consumer<RequestOtpVM>(builder: (context, vm, _) {
+          return Checkbox(
+              activeColor: primaryLight3,
+              value: vm.isTermsCheckboxChecked,
+              onChanged: vm.termsCheckboxOnChange);
+        }),
+        RichText(
+          text: TextSpan(children: [
+            TextSpan(
+                recognizer: TapGestureRecognizer()
+                  ..onTap = vm.termsCheckboxOnTap,
+                text: getString(context)?.agree_terms_1 ?? "",
+                style: const TextStyle(color: black)),
+            TextSpan(
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    // launch(GlobalVars.terms);
+                  },
+                text: getString(context)?.agree_terms_2 ?? "",
+                style: const TextStyle(color: primaryDark4))
+          ]),
+        ),
+      ],
+    );
   }
 }
