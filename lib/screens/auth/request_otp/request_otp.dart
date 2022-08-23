@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:soapp/utils/routes.dart';
+import 'package:soapp/widgets/asset_img_png.dart';
 
 import '../../../utils/colors.dart';
 import '../../../utils/constants.dart';
@@ -29,7 +29,7 @@ class RequestOtpScreen extends BaseStatelessWidget {
             height: double.infinity,
             decoration: const BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("assets/img/bg_request_otp.png"),
+                    image: AssetImage("$assetsImg/bg_request_otp.png"),
                     fit: BoxFit.cover,
                     alignment: Alignment.topCenter)),
             child: ScrollableSingleWidget(
@@ -42,9 +42,7 @@ class RequestOtpScreen extends BaseStatelessWidget {
                   // soapp word logo
                   const FractionallySizedBox(
                       widthFactor: 0.35,
-                      child: Image(
-                        image: AssetImage("assets/logo/words_white.png"),
-                      )),
+                      child: AssetLogoPngWidget('words_white')),
 
                   const ExpandedWidget(55, 20),
 

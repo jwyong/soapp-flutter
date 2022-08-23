@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BaseVM {

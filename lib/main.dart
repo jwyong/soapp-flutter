@@ -1,28 +1,37 @@
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:soapp/utils/routes.dart';
-import 'package:soapp/views/home/home.dart';
+import 'package:soapp/screens/home/soapp_tab/crypto_wallet/crypto_wallet.dart';
+
+import 'screens/auth/request_otp/request_otp.dart';
+import 'screens/auth/request_otp/request_otp_vm.dart';
+import 'screens/home/home.dart';
 import 'utils/colors.dart';
 import 'utils/constants.dart';
-import 'views/auth/request_otp/request_otp_vm.dart';
-import 'views/auth/request_otp/request_otp.dart';
+import 'utils/routes.dart';
 
 void main() {
-  runApp(const Soapp());
+  WidgetsFlutterBinding.ensureInitialized();
+  EncryptedSharedPreferences().getString(spKeyInitialRoute).then((String? value) {
+    runApp(Soapp(value));
+  });
 }
 
 class Soapp extends StatelessWidget {
-  const Soapp({Key? key}) : super(key: key);
+  const Soapp(this.initialRoute, {Key? key}) : super(key: key);
+  final String? initialRoute;
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("JAY_LOG: Soapp, build, loginStg = $initialRoute");
+
     return MultiProvider(
         providers: _getProviders(context),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Soapp',
+          title: soapp,
 
           // localisation
           localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -36,14 +45,17 @@ class Soapp extends StatelessWidget {
 
           // route
           routes: {
-            routeHome: (context) => Home(),
+            routeHome: (context) => const HomeScreen(),
+            routeDefault: (context) => const RequestOtpScreen(),
+            routeCryptoWallet: (context) => const CryptoWalletScreen(),
           },
 
-          // home
-          home: const RequestOtpScreen(),
+          // initialRoute based on where user left off last
+          initialRoute: initialRoute?? routeDefault,
         ));
   }
 
+  // get list of providers
   List<SingleChildWidget> _getProviders(BuildContext context) {
     return [ChangeNotifierProvider.value(value: RequestOtpVM())];
   }

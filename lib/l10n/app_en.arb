@@ -53,5 +53,7 @@
   "selected": "Selected",
 
   "invite_friends": "Invite your friends to Soapp to starting chatting!",
-  "contacts_sync_success": "Contacts successfully synced!"
+  "contacts_sync_success": "Contacts successfully synced!",
+
+  "crypto_wallet": "Crypto Wallet"
 }

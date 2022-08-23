@@ -6,10 +6,10 @@ import 'package:country_picker/country_picker.dart';
 import 'package:country_picker/src/utils.dart';
 
 import 'package:flutter/material.dart';
-import 'package:soapp/models/auth/CountryCode.dart';
-import 'package:soapp/utils/constants.dart';
-import 'package:soapp/utils/routes.dart';
-import 'package:soapp/views/base_vm.dart';
+import '../../../models/auth/CountryCode.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/routes.dart';
+import '../../../screens/base_vm.dart';
 
 class RequestOtpVM extends BaseVM with ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -108,6 +108,7 @@ class RequestOtpVM extends BaseVM with ChangeNotifier {
   submitBtnOnPressed(BuildContext context) {
     showSnackbar(context, 'formData: ${getFormData(0)}, ${getFormData(1)}');
 
+    setSpString(spKeyInitialRoute, routeHome);
     navigateTo(context, routeHome, shouldClosePrevious: true);
   }
 }
