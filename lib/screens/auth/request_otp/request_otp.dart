@@ -2,6 +2,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:move_to_background/move_to_background.dart';
 import 'package:provider/provider.dart';
 import 'package:soapp/widgets/asset_img_png.dart';
 
@@ -23,56 +24,65 @@ class RequestOtpScreen extends BaseStatelessWidget {
     final RequestOtpVM vm = Provider.of(context, listen: false);
     vm.initFormData();
 
-    return Scaffold(
-        body: Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("$assetsImg/bg_request_otp.png"),
-                    fit: BoxFit.cover,
-                    alignment: Alignment.topCenter)),
-            child: ScrollableSingleWidget(
-              padding: const EdgeInsets.symmetric(horizontal: mainPaddingHori),
-              child: Column(
-                children: <Widget>[
-                  // space
-                  const ExpandedWidget(25, 20),
+    return WillPopScope(
+        child: Scaffold(
+            body: Container(
+                width: double.infinity,
+                height: double.infinity,
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("$assetsImg/bg_request_otp.png"),
+                        fit: BoxFit.cover,
+                        alignment: Alignment.topCenter)),
+                child: ScrollableSingleWidget(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: mainPaddingHori),
+                  child: Column(
+                    children: <Widget>[
+                      // space
+                      // const Spacer(20),
+                      const ExpandedWidget(25, 20),
 
-                  // soapp word logo
-                  const FractionallySizedBox(
-                      widthFactor: 0.35,
-                      child: AssetLogoPngWidget('words_white')),
+                      // soapp word logo
+                      const FractionallySizedBox(
+                          widthFactor: 0.35,
+                          child: AssetLogoPngWidget('words_white')),
 
-                  const ExpandedWidget(55, 20),
+                      const ExpandedWidget(55, 20),
 
-                  // what's your phone number?
-                  Text(getString(context)?.input_phone_number ?? "",
-                      style: getStyle(context).headline6),
-                  const SizedBox(height: 10),
+                      // what's your phone number?
+                      Text(getString(context)?.input_phone_number ?? "",
+                          style: getStyle(context).headline6),
+                      const SizedBox(height: 10),
 
-                  // phone number form
-                  _PhoneNumberFormWidget(vm),
+                      // phone number form
+                      _PhoneNumberFormWidget(vm),
 
-                  const ExpandedWidget(12, 10),
+                      const ExpandedWidget(12, 10),
 
-                  // terms and conditions checkbox
-                  _TermsCheckboxWidget(vm),
+                      // terms and conditions checkbox
+                      _TermsCheckboxWidget(vm),
 
-                  // submit btn
-                  Consumer<RequestOtpVM>(builder: (context, vm, _) {
-                    return ButtonWidget(
-                      getString(context)?.send_otp,
-                      vm.isSubmitBtnEnabled ? () {
-                        vm.submitBtnOnPressed(context);
-                      } : null,
-                    );
-                  }),
+                      // submit btn
+                      Consumer<RequestOtpVM>(builder: (context, vm, _) {
+                        return ButtonWidget(
+                          getString(context)?.send_otp,
+                          vm.isSubmitBtnEnabled
+                              ? () {
+                                  vm.submitBtnOnPressed(context);
+                                }
+                              : null,
+                        );
+                      }),
 
-                  const ExpandedWidget(18, 10),
-                ],
-              ),
-            )));
+                      const ExpandedWidget(18, 10),
+                    ],
+                  ),
+                ))),
+        onWillPop: () async {
+          MoveToBackground.moveTaskToBack();
+          return false;
+        });
   }
 }
 

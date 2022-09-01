@@ -15,15 +15,4 @@ mixin BaseFunctions on Widget { // you can also constrain the mixin to specific 
 
   // get text style
   TextTheme getStyle(BuildContext context) => Theme.of(context).textTheme;
-
-  /// route navigation
-  /// TODO: check how to combine with baseVM method (global func?)
-  navigateTo(BuildContext context, String routeName,
-      {bool shouldClosePrevious = false}) {
-    if (shouldClosePrevious) {
-      Navigator.pushReplacementNamed(context, routeName);
-    } else {
-      Navigator.pushNamed(context, routeName);
-    }
-  }
 }

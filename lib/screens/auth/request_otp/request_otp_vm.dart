@@ -48,9 +48,6 @@ class RequestOtpVM extends BaseVM with ChangeNotifier {
         isTermsCheckboxChecked = isChecked;
         notifyListeners();
       }
-
-      debugPrint(
-          "JAY_LOG: RequestOtpVM, initFormData, isChecked = $isCheckedStr, is ${isCheckedStr.runtimeType}");
     });
   }
 
@@ -110,5 +107,12 @@ class RequestOtpVM extends BaseVM with ChangeNotifier {
 
     setSpString(spKeyInitialRoute, routeHome);
     navigateTo(context, routeHome, shouldClosePrevious: true);
+  }
+
+  @override
+  void dispose() {
+    phoneNumberController.dispose();
+    ccpController.dispose();
+    super.dispose();
   }
 }

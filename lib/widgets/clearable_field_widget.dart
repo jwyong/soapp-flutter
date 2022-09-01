@@ -5,6 +5,7 @@ import '../utils/dimensions.dart';
 import 'base_stateless_widget.dart';
 
 class ClearableFieldWidget extends BaseStatefulWidget {
+  final String? label;
   final bool? autoFocus;
   final int? maxLines;
   final Color? fillColour;
@@ -22,25 +23,29 @@ class ClearableFieldWidget extends BaseStatefulWidget {
   final bool? obscureText;
   final IconButton? prefixIcon;
   final TextCapitalization? textCapitalization;
+  final IconButton? suffixIcon;
 
-  const ClearableFieldWidget({Key? key,
-    this.hintText,
-    this.maxLength,
-    this.maxLines,
-    this.autoFocus,
-    this.onChanged,
-    this.fillColour,
-    this.controller,
-    this.focusNode,
-    this.textInputAction,
-    this.validator,
-    this.onFieldSubmitted,
-    this.onSaved,
-    this.keyboardType,
-    this.inputFormatters,
-    this.obscureText,
-    this.prefixIcon,
-    this.textCapitalization})
+  const ClearableFieldWidget(
+      {Key? key,
+      this.label,
+      this.hintText,
+      this.maxLength,
+      this.maxLines,
+      this.autoFocus,
+      this.onChanged,
+      this.fillColour,
+      this.controller,
+      this.focusNode,
+      this.textInputAction,
+      this.validator,
+      this.onFieldSubmitted,
+      this.onSaved,
+      this.keyboardType,
+      this.inputFormatters,
+      this.obscureText,
+      this.prefixIcon,
+      this.suffixIcon,
+      this.textCapitalization})
       : super(key: key);
 
   @override
@@ -53,7 +58,7 @@ class _State extends State<ClearableFieldWidget> {
 
   @override
   void initState() {
-    controller = widget.controller?? TextEditingController();
+    controller = widget.controller ?? TextEditingController();
     controller.addListener(() {
       if (controller.text.isNotEmpty != shouldShowClearBtn) {
         shouldShowClearBtn = controller.text.isNotEmpty;
@@ -79,32 +84,32 @@ class _State extends State<ClearableFieldWidget> {
       inputFormatters: widget.inputFormatters,
       validator: widget.validator,
       onFieldSubmitted: widget.onFieldSubmitted,
-      textInputAction: widget.textInputAction,
-      style: widget
-          .getStyle(context)
-          .subtitle1,
+      textInputAction: widget.textInputAction?? TextInputAction.done,
+      style: widget.getStyle(context).subtitle1,
       keyboardType: widget.keyboardType,
-      decoration: getInputDecoration(
+      decoration: getInputDecoration(widget.label,
           suffixIcon: controller.text.isNotEmpty
               ? IconButton(
-              color: grey9,
-              icon: const Icon(Icons.clear_rounded),
-              onPressed: () {
-                controller.clear();
-                widget.onChanged?.call(controller.text);
-              })
-              : null,
+                  tooltip: widget.getString(context)?.clear,
+                  color: grey9,
+                  icon: const Icon(Icons.clear_rounded),
+                  onPressed: () {
+                    controller.clear();
+                    widget.onChanged?.call(controller.text);
+                  })
+              : widget.suffixIcon,
           prefixIcon: widget.prefixIcon,
           hintText: widget.hintText,
           fillColour: widget.fillColour ?? grey1),
     );
   }
 
-  InputDecoration getInputDecoration({IconButton? suffixIcon,
-    IconButton? prefixIcon,
-    Color? fillColour,
-    String? hintText,
-    String? errorTxt}) {
+  InputDecoration getInputDecoration(String? label,
+      {IconButton? suffixIcon,
+      IconButton? prefixIcon,
+      Color? fillColour,
+      String? hintText,
+      String? errorTxt}) {
     OutlineInputBorder border = OutlineInputBorder(
         borderRadius: BorderRadius.circular(formRadius),
         borderSide: const BorderSide(color: Colors.transparent));
@@ -120,11 +125,9 @@ class _State extends State<ClearableFieldWidget> {
       fillColor: fillColour,
       hintText: hintText,
       errorText: errorTxt,
+      label: label != null? Text(label): null,
       labelStyle: const TextStyle(backgroundColor: grey1, color: grey8),
-      hintStyle: widget
-          .getStyle(context)
-          .subtitle1
-          ?.apply(color: grey8),
+      hintStyle: widget.getStyle(context).subtitle1?.apply(color: grey8),
       filled: true,
       contentPadding: const EdgeInsets.symmetric(
           horizontal: formPaddingHori, vertical: formPaddingVerti),

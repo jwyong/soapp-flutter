@@ -6,13 +6,12 @@ import 'package:soapp/widgets/base_stateless_widget.dart';
 
 class ButtonWidget extends BaseStatelessWidget {
   const ButtonWidget(this.label, this.onPressed,
-      {Key? key, this.isBtnEnabled, this.widthFactor})
+      {Key? key, this.widthFactor})
       : super(key: key);
 
   final String? label;
   final VoidCallback? onPressed;
   final double? widthFactor;
-  final bool? isBtnEnabled;
 
   @override
   Widget build(BuildContext context) {

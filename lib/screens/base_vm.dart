@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
 
@@ -7,9 +8,9 @@ class BaseVM {
   /// sharedPrefs
   EncryptedSharedPreferences encSP = EncryptedSharedPreferences();
 
-  getSpStringFuture(String key) => encSP.getString(key);
+  Future<String> getSpStringFuture(String key) => encSP.getString(key);
 
-  setSpString(String key, value) {
+  void setSpString(String key, value) {
     encSP.setString(key, value.toString());
   }
 
@@ -35,12 +36,22 @@ class BaseVM {
   String getFormData(int index) => formData[index] ?? '';
 
   /// route navigation
-  navigateTo(BuildContext context, String routeName,
+  GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+  // finish
+  void finish(BuildContext context) {
+    Navigator.pop(context);
+  }
+
+  // navigateTo
+  void navigateTo(BuildContext context, String routeName,
       {bool shouldClosePrevious = false}) {
+    final navigator = Navigator.of(context);
+
     if (shouldClosePrevious) {
-      Navigator.pushReplacementNamed(context, routeName);
+      navigator.pushReplacementNamed(routeName);
     } else {
-      Navigator.pushNamed(context, routeName);
+      navigator.pushNamed(routeName);
     }
   }
 
@@ -52,4 +63,7 @@ class BaseVM {
   delayMs(int milliSeconds, void Function() function) {
     Timer(Duration(milliseconds: milliSeconds), function);
   }
+
+  AppLocalizations? getString(BuildContext context) =>
+      AppLocalizations.of(context);
 }
