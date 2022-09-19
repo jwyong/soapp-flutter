@@ -34,6 +34,15 @@ class CryptoWalletScreen extends BaseStatelessWidget {
                   Navigator.maybePop(context);
                 },
               ),
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      vm.encSP.remove(spKeyCryptoPrivKey).then((value) {
+                        vm.finish(context);
+                      });
+                    },
+                    icon: const Icon(Icons.refresh))
+              ],
               title: Text(getString(context)?.crypto_wallet ?? ''),
             ),
             body: SafeArea(
@@ -41,35 +50,65 @@ class CryptoWalletScreen extends BaseStatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 15, horizontal: 20),
                     child: MultiProvider(
-                        providers: [ChangeNotifierProvider.value(value: vm)],
-                        child: Navigator(
-                            key: vm.navigatorKey,
-                            onGenerateRoute: (RouteSettings settings) {
-                              WidgetBuilder builder;
-                              switch (settings.name) {
-                                case routeRecovery:
-                                  builder = (BuildContext context) =>
-                                      ChangeNotifierProvider.value(
-                                          value: RecoveryVM(),
-                                          child: const RecoveryScreen());
-                                  break;
+                      providers: [ChangeNotifierProvider.value(value: vm)],
+                      child: FutureBuilder(
+                        builder: (ctx, snapshot) {
+                          // Displaying LoadingSpinner to indicate waiting state
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return _CryptoWalletNavigator(
+                                vm, snapshot.data?.toString());
+                          }
 
-                                case routeEthWallet:
-                                  builder = (BuildContext context) =>
-                                      ChangeNotifierProvider.value(
-                                          value: EthWalletVM(),
-                                          child: const EthWalletScreen());
-                                  break;
+                          return const SizedBox.shrink();
+                        },
 
-                                default:
-                                  builder = (BuildContext context) =>
-                                      const WalletListScreen();
-                                  break;
-                              }
-                              return MaterialPageRoute<void>(
-                                  builder: builder, settings: settings);
-                            }))))),
+                        // Future that needs to be resolved
+                        // inorder to display something on the Canvas
+                        future: vm.getSpStringFuture(spKeyCryptoPrivKey),
+                      ),
+                    )))),
         onWillPop: () async =>
             await vm.navigatorKey.currentState?.maybePop() != true);
+  }
+}
+
+class _CryptoWalletNavigator extends StatelessWidget {
+  const _CryptoWalletNavigator(this.vm, this.spPrivateKey);
+
+  final CryptoWalletVM vm;
+  final String? spPrivateKey;
+
+  // final Object? spPrivateKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+        key: vm.navigatorKey,
+        initialRoute: spPrivateKey?.isNotEmpty == true ? '' : routeRecovery,
+        onGenerateRoute: (RouteSettings settings) {
+          WidgetBuilder builder;
+
+          switch (settings.name) {
+            // recovery
+            case routeRecovery:
+              builder = (BuildContext context) => ChangeNotifierProvider.value(
+                  value: RecoveryVM(), child: const RecoveryScreen());
+              break;
+
+            // eth wallet
+            case routeEthWallet:
+              builder = (BuildContext context) => ChangeNotifierProvider.value(
+                  value: EthWalletVM(), child: const EthWalletScreen());
+              break;
+
+            // main page - wallet list
+            default:
+              builder = (BuildContext context) => const WalletListScreen();
+              break;
+          }
+
+          return MaterialPageRoute<void>(builder: builder, settings: settings);
+        });
   }
 }

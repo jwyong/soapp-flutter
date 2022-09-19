@@ -17,7 +17,6 @@ class RecoveryScreen extends BaseStatelessWidget {
     final CryptoWalletVM sharedVM = Provider.of(context, listen: false);
     final RecoveryVM vm = Provider.of(context, listen: false);
 
-    return Text("recovery");
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,

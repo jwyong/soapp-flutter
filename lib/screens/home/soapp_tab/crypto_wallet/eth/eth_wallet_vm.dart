@@ -64,10 +64,13 @@ class EthWalletVM extends BaseVM with ChangeNotifier {
   }
 
   Future<void> sendEth(BuildContext context) async {
+    // get current gas estimate first
+    double gasInGwei = await cryptoRepo.getGasPriceInGwei();
+
     try {
       final String toAddress = getFormData(0);
       final double ethAmount = double.parse(getFormData(1));
-      cryptoRepo.sendEth(privateKey, toAddress, ethAmount).then((value) {
+      cryptoRepo.sendEth(privateKey, toAddress, ethAmount, gasInGwei.ceil()).then((value) {
         getBalance();
 
         showSnackbar(context,

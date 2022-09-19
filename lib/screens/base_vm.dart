@@ -10,17 +10,16 @@ class BaseVM {
 
   Future<String> getSpStringFuture(String key) => encSP.getString(key);
 
-  void setSpString(String key, value) {
+  Future<bool> setSpString(String key, value) =>
     encSP.setString(key, value.toString());
-  }
 
   // get sp bool from str
-  getSpBool(String boolStr) => boolStr == "true";
-
-  Map<int, String> formData = {};
+  bool getSpBool(String boolStr) => boolStr == "true";
 
   /// formData
-// save value to var for each form field
+  Map<int, String> formData = {};
+
+  // save value to var for each form field
   void setFormData0(String? val) {
     if (val != null) formData[0] = val;
   }
@@ -60,10 +59,7 @@ class BaseVM {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
-  delayMs(int milliSeconds, void Function() function) {
-    Timer(Duration(milliseconds: milliSeconds), function);
-  }
-
+  /// strings/styles
   AppLocalizations? getString(BuildContext context) =>
       AppLocalizations.of(context);
 }

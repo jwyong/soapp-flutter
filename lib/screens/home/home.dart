@@ -73,7 +73,7 @@ class HomeScreen extends BaseStatelessWidget {
           floatingActionButton: FloatingActionButton(
               backgroundColor: primary,
               onPressed: () {
-                vm.checkAndGoToCryptoWalletScreen(context);
+                vm.navigateTo(context, routeCryptoWallet);
               },
               // tooltip: localizations.buttonTextCreate,
               child: const Icon(Icons.wallet)),

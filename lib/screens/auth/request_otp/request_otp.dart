@@ -159,22 +159,20 @@ class _TermsCheckboxWidget extends BaseStatelessWidget {
               value: vm.isTermsCheckboxChecked,
               onChanged: vm.termsCheckboxOnChange);
         }),
-        RichText(
-          text: TextSpan(children: [
-            TextSpan(
-                recognizer: TapGestureRecognizer()
-                  ..onTap = vm.termsCheckboxOnChange(null),
-                text: getString(context)?.agree_terms_1 ?? "",
+        InkWell(
+            child: Text(getString(context)?.agree_terms_1 ?? "",
                 style: getStyle(context).bodyMedium),
-            TextSpan(
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    // launch(GlobalVars.terms);
-                  },
-                text: getString(context)?.agree_terms_2 ?? "",
-                style: getStyle(context).bodyMedium?.apply(color: primaryDark4))
-          ]),
-        ),
+            onTap: () {
+              vm.termsCheckboxOnChange(null);
+            }),
+        InkWell(
+            child: Text(
+              getString(context)?.agree_terms_2 ?? "",
+              style: getStyle(context).bodyMedium?.apply(color: primaryDark4),
+            ),
+            onTap: () {
+              // TODO: launch website
+            })
       ],
     );
   }

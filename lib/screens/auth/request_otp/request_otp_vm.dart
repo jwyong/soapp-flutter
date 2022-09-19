@@ -43,11 +43,8 @@ class RequestOtpVM extends BaseVM with ChangeNotifier {
 
     // terms checkbox
     getSpStringFuture(spKeyTermsCheckbox).then((String isCheckedStr) {
-      bool isChecked = getSpBool(isCheckedStr);
-      if (isTermsCheckboxChecked != isChecked) {
-        isTermsCheckboxChecked = isChecked;
-        notifyListeners();
-      }
+      bool isChecked = getSpBool(isCheckedStr)?? false;
+      termsCheckboxOnChange(isChecked, shouldSetSp: false);
     });
   }
 
@@ -87,11 +84,11 @@ class RequestOtpVM extends BaseVM with ChangeNotifier {
   }
 
 // terms checkbox
-  termsCheckboxOnChange(bool? isChecked) {
+  void termsCheckboxOnChange(bool? isChecked, {bool shouldSetSp = true}) {
     isTermsCheckboxChecked = isChecked ?? !isTermsCheckboxChecked;
 
     // update to sp
-    setSpString(spKeyTermsCheckbox, isTermsCheckboxChecked);
+    if (shouldSetSp) setSpString(spKeyTermsCheckbox, isTermsCheckboxChecked);
     isSubmitBtnEnabled = getSubmitBtnEnabled();
     notifyListeners();
   }

@@ -16,8 +16,7 @@ class WalletListScreen extends BaseStatelessWidget {
     return ListView(
       children: [
         ButtonWidget(getString(context)?.eth_wallet, () {
-          Navigator.pushNamed(context, routeRecovery);
-          // sharedVM.navigateTo(context, routeRecovery);
+          Navigator.pushNamed(context, routeEthWallet);
         })
       ],
     );

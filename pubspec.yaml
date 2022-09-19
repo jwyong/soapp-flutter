@@ -44,7 +44,7 @@ dependencies:
   move_to_background: ^1.0.2
 
   ### crypto
-  web3dart: ^2.3.5
+  web3dart: ^2.4.1
   bip32: ^2.0.0
   bip39: ^1.0.6
   ed25519_hd_key: ^2.2.0

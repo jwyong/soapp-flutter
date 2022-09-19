@@ -10,7 +10,6 @@ import '../web3/web3_client_service.dart';
 class EthRepo {
   // TODO: make singleton
   final CryptoClientService web3clientService = CryptoClientService();
-  final EtherAmount gasPrice = EtherAmount.fromUnitAndValue(EtherUnit.gwei, 5);
   final int maxGas = 21000;
 
   // get credentials from privateKey
@@ -67,13 +66,14 @@ class EthRepo {
   // );
 
   // send eth to other address
-  Future<String> sendEth(
-          String privateKey, String toAddress, double etherToSend) async =>
+  Future<String> sendEth(String privateKey, String toAddress,
+          double etherToSend, int gasPriceInGwei) async =>
       await web3clientService.ethClient.sendTransaction(
           getCredentials(privateKey),
           Transaction(
             to: EthereumAddress.fromHex(toAddress),
-            gasPrice: gasPrice,
+            gasPrice:
+                EtherAmount.fromUnitAndValue(EtherUnit.gwei, gasPriceInGwei),
             maxGas: maxGas,
             value: getWeiFromEtherDouble(etherToSend),
           ));

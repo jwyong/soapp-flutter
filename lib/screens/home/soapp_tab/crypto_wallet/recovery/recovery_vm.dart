@@ -36,14 +36,13 @@ class RecoveryVM extends BaseVM with ChangeNotifier {
 
   /// submit btn
   void submitBtnOnClick(BuildContext context) {
-    cryptoRepo.getKeysFromMnemonic(getFormData(0)).then((CryptoKeyPair pair) {
+    cryptoRepo.getKeysFromMnemonic(getFormData(0).trim()).then((CryptoKeyPair pair) async {
       // store keys to sp for future use
-      setSpString(spKeyCryptoPrivKey, pair.privateKey);
-      setSpString(spKeyCryptoPubKey, pair.publicKey);
+      await setSpString(spKeyCryptoPrivKey, pair.privateKey);
+      await setSpString(spKeyCryptoPubKey, pair.publicKey);
 
       // navigate to cryptoWallet screen
-      finish(context);
-      navigateTo(context, routeCryptoWallet);
+      navigateTo(context, routeCryptoWallet, shouldClosePrevious: true);
     });
   }
 
