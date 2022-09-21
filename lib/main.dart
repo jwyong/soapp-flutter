@@ -47,7 +47,7 @@ class Soapp extends StatelessWidget {
         routeRequestOtp: (context) => ChangeNotifierProvider.value(
             value: RequestOtpVM(), child: const RequestOtpScreen()),
         routeHome: (context) =>
-            Provider.value(value: HomeVM(), child: const HomeScreen()),
+            ChangeNotifierProvider.value(value: HomeVM(), child: const HomeScreen()),
         routeCryptoWallet: (context) => ChangeNotifierProvider.value(
             value: CryptoWalletVM(), child: const CryptoWalletScreen()),
       },

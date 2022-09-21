@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:provider/provider.dart';
+import 'package:soapp/screens/home/appt_tab/appt_tab/appt_tab.dart';
+import 'package:soapp/screens/home/chat_tab/chat_tab/chat_tab.dart';
+import 'package:soapp/screens/home/discover_tab/discover_tab/discover_tab.dart';
+import 'package:soapp/screens/home/home_tab/home_tab.dart';
 import 'package:soapp/screens/home/home_vm.dart';
+import 'package:soapp/screens/home/settings_tab/settings_tab/settings_tab.dart';
+
 import '../../utils/colors.dart';
 import '../../utils/constants.dart';
 import '../../utils/routes.dart';
@@ -9,67 +16,107 @@ import '../../widgets/asset_img_png.dart';
 import '../../widgets/base_stateless_widget.dart';
 
 // TODO: do proper tabs after done crypto wallet
-class HomeScreen extends BaseStatelessWidget {
+class HomeScreen extends BaseStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final HomeVM vm = Provider.of(context, listen: false);
+  State<StatefulWidget> createState() => _HomeScreenState();
+}
 
-    var bottomNavigationBarItems = <BottomNavigationBarItem>[
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  late HomeVM vm;
+
+  @override
+  void initState() {
+    debugPrint("JAY_LOG: _HomeScreenState, initState, ");
+
+    vm = Provider.of(context, listen: false);
+    vm.homeTabController =
+        TabController(length: 5, initialIndex: 2, vsync: this);
+    vm.init();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    vm.homeTabController.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    debugPrint("JAY_LOG: _HomeScreenState, build, vm = ${vm.hashCode}, "
+        "cont = ${vm.homeTabController.hashCode}");
+
+    AppLocalizations? appLoc = widget.getString(context);
+
+    List<BottomNavigationBarItem> bottomNavigationBarItems =
+        <BottomNavigationBarItem>[
       // soapp (home)
       const BottomNavigationBarItem(
-        icon: AssetImgPngWidget('ic_soapp_1', width: 20),
+        activeIcon: AssetImgPngWidget('ic_home_1', width: 20),
+        icon: AssetImgPngWidget('ic_home_0', width: 20),
         label: soapp,
       ),
 
       // discover (restaurants)
       BottomNavigationBarItem(
+        activeIcon: const AssetImgPngWidget('ic_discover_1', width: 20),
         icon: const AssetImgPngWidget('ic_discover_0', width: 20),
-        label: getString(context)?.discover,
+        label: appLoc?.discover,
       ),
 
       // chat
       BottomNavigationBarItem(
+        activeIcon: const AssetImgPngWidget('ic_chat_1', width: 20),
         icon: const AssetImgPngWidget('ic_chat_0', width: 20),
-        label: getString(context)?.chat,
+        label: appLoc?.chat,
       ),
 
       // appt
       BottomNavigationBarItem(
-        icon: const AssetImgPngWidget('ic_discover_0', width: 20),
-        label: getString(context)?.discover,
+        activeIcon: const AssetImgPngWidget('ic_appt_1', width: 20),
+        icon: const AssetImgPngWidget('ic_appt_0', width: 20),
+        label: appLoc?.discover,
       ),
 
       // profile
       BottomNavigationBarItem(
+        activeIcon: const AssetImgPngWidget('ic_profile_1', width: 20),
         icon: const AssetImgPngWidget('ic_profile_0', width: 20),
-        label: getString(context)?.profile,
+        label: appLoc?.profile,
       ),
     ];
 
     return WillPopScope(
         child: Scaffold(
-          body: const SafeArea(child: Center(child: Text("Home"))),
-          bottomNavigationBar:
-              // _BottomAppBar(),
-              BottomNavigationBar(
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            items: bottomNavigationBarItems,
-            // currentIndex: _currentIndex.value,
-            type: BottomNavigationBarType.fixed,
-            // selectedFontSize: textTheme.caption!.fontSize!,
-            // unselectedFontSize: textTheme.caption!.fontSize!,
-            onTap: (index) {
-              // setState(() {
-              //   _currentIndex.value = index;
-              // });
-            },
-            // selectedItemColor: colorScheme.onPrimary,
-            // unselectedItemColor: colorScheme.onPrimary.withOpacity(0.38),
-            backgroundColor: grey1,
+          body: TabBarView(
+            controller: vm.homeTabController,
+            children: const [
+              HomeTabScreen(),
+              DiscoverTabScreen(),
+              ChatTabScreen(),
+              ApptTabScreen(),
+              SettingsTabScreen()
+            ],
           ),
+          bottomNavigationBar: Consumer<HomeVM>(
+              builder: (context, vm, _) => BottomNavigationBar(
+                    showSelectedLabels: false,
+                    showUnselectedLabels: false,
+                    items: bottomNavigationBarItems,
+                    currentIndex: vm.homeTabController.index,
+                    type: BottomNavigationBarType.fixed,
+                    // selectedFontSize: textTheme.caption!.fontSize!,
+                    // unselectedFontSize: textTheme.caption!.fontSize!,
+                    onTap: vm.tapBarItemOnClick,
+                    // selectedItemColor: colorScheme.onPrimary,
+                    // unselectedItemColor: colorScheme.onPrimary.withOpacity(0.38),
+                    backgroundColor: grey1,
+                  )),
           floatingActionButton: FloatingActionButton(
               backgroundColor: primary,
               onPressed: () {
@@ -83,37 +130,4 @@ class HomeScreen extends BaseStatelessWidget {
           return false;
         });
   }
-}
-
-class _BottomAppBar extends StatelessWidget {
-  // const _BottomAppBar({this.shape,});
-
-  // final NotchedShape? shape;
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomAppBar(
-      shape: const CircularNotchedRectangle(),
-      color: grey1,
-      child: IconTheme(
-        data: IconThemeData(color: primary),
-        child: Row(
-          children: [
-            test(),
-            test(),
-            Expanded(child: SizedBox()),
-            test(),
-            test(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget test() => Expanded(
-          child: IconButton(
-        // tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-        icon: const Icon(Icons.menu),
-        onPressed: () {},
-      ));
 }

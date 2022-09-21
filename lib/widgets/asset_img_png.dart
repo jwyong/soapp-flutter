@@ -12,6 +12,7 @@ class AssetImgPngWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image(
+      gaplessPlayback: true,
       image: AssetImage("$assetsImg/$imgName.png"),
       width: width,
       height: height,
