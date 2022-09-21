@@ -1,5 +1,6 @@
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:soapp/screens/home/home_vm.dart';
@@ -28,6 +29,9 @@ class Soapp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // portrait only
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: soapp,
@@ -46,8 +50,8 @@ class Soapp extends StatelessWidget {
       routes: {
         routeRequestOtp: (context) => ChangeNotifierProvider.value(
             value: RequestOtpVM(), child: const RequestOtpScreen()),
-        routeHome: (context) =>
-            ChangeNotifierProvider.value(value: HomeVM(), child: const HomeScreen()),
+        routeHome: (context) => ChangeNotifierProvider.value(
+            value: HomeVM(), child: const HomeScreen()),
         routeCryptoWallet: (context) => ChangeNotifierProvider.value(
             value: CryptoWalletVM(), child: const CryptoWalletScreen()),
       },

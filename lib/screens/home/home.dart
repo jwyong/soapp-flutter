@@ -29,11 +29,9 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   void initState() {
-    debugPrint("JAY_LOG: _HomeScreenState, initState, ");
-
     vm = Provider.of(context, listen: false);
     vm.homeTabController =
-        TabController(length: 5, initialIndex: 2, vsync: this);
+        TabController(length: 5, initialIndex: 0, vsync: this);
     vm.init();
 
     super.initState();
@@ -47,87 +45,75 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   @override
-  Widget build(BuildContext context) {
-    debugPrint("JAY_LOG: _HomeScreenState, build, vm = ${vm.hashCode}, "
-        "cont = ${vm.homeTabController.hashCode}");
-
-    AppLocalizations? appLoc = widget.getString(context);
-
-    List<BottomNavigationBarItem> bottomNavigationBarItems =
-        <BottomNavigationBarItem>[
-      // soapp (home)
-      const BottomNavigationBarItem(
-        activeIcon: AssetImgPngWidget('ic_home_1', width: 20),
-        icon: AssetImgPngWidget('ic_home_0', width: 20),
-        label: soapp,
-      ),
-
-      // discover (restaurants)
-      BottomNavigationBarItem(
-        activeIcon: const AssetImgPngWidget('ic_discover_1', width: 20),
-        icon: const AssetImgPngWidget('ic_discover_0', width: 20),
-        label: appLoc?.discover,
-      ),
-
-      // chat
-      BottomNavigationBarItem(
-        activeIcon: const AssetImgPngWidget('ic_chat_1', width: 20),
-        icon: const AssetImgPngWidget('ic_chat_0', width: 20),
-        label: appLoc?.chat,
-      ),
-
-      // appt
-      BottomNavigationBarItem(
-        activeIcon: const AssetImgPngWidget('ic_appt_1', width: 20),
-        icon: const AssetImgPngWidget('ic_appt_0', width: 20),
-        label: appLoc?.discover,
-      ),
-
-      // profile
-      BottomNavigationBarItem(
-        activeIcon: const AssetImgPngWidget('ic_profile_1', width: 20),
-        icon: const AssetImgPngWidget('ic_profile_0', width: 20),
-        label: appLoc?.profile,
-      ),
-    ];
-
-    return WillPopScope(
-        child: Scaffold(
-          body: TabBarView(
-            controller: vm.homeTabController,
-            children: const [
-              HomeTabScreen(),
-              DiscoverTabScreen(),
-              ChatTabScreen(),
-              ApptTabScreen(),
-              SettingsTabScreen()
-            ],
-          ),
-          bottomNavigationBar: Consumer<HomeVM>(
-              builder: (context, vm, _) => BottomNavigationBar(
-                    showSelectedLabels: false,
-                    showUnselectedLabels: false,
-                    items: bottomNavigationBarItems,
-                    currentIndex: vm.homeTabController.index,
-                    type: BottomNavigationBarType.fixed,
-                    // selectedFontSize: textTheme.caption!.fontSize!,
-                    // unselectedFontSize: textTheme.caption!.fontSize!,
-                    onTap: vm.tapBarItemOnClick,
-                    // selectedItemColor: colorScheme.onPrimary,
-                    // unselectedItemColor: colorScheme.onPrimary.withOpacity(0.38),
-                    backgroundColor: grey1,
-                  )),
-          floatingActionButton: FloatingActionButton(
-              backgroundColor: primary,
-              onPressed: () {
-                vm.navigateTo(context, routeCryptoWallet);
-              },
-              // tooltip: localizations.buttonTextCreate,
-              child: const Icon(Icons.wallet)),
+  Widget build(BuildContext context) => WillPopScope(
+      child: Scaffold(
+        body: TabBarView(
+          controller: vm.homeTabController,
+          children: const [
+            HomeTabScreen(),
+            DiscoverTabScreen(),
+            ChatTabScreen(),
+            ApptTabScreen(),
+            SettingsTabScreen()
+          ],
         ),
-        onWillPop: () async {
-          MoveToBackground.moveTaskToBack();
-          return false;
-        });
-  }
+        bottomNavigationBar: Consumer<HomeVM>(
+            // TODO: re-enable consumer vm val once done test
+            builder: (context, _, __) => BottomNavigationBar(
+                  showSelectedLabels: false,
+                  showUnselectedLabels: false,
+                  items: getHomeTabItems(widget.getString(context)),
+                  currentIndex: vm.homeTabController.index,
+                  type: BottomNavigationBarType.fixed,
+                  // selectedFontSize: textTheme.caption!.fontSize!,
+                  // unselectedFontSize: textTheme.caption!.fontSize!,
+                  onTap: vm.tapBarItemOnClick,
+                  // selectedItemColor: colorScheme.onPrimary,
+                  // unselectedItemColor: colorScheme.onPrimary.withOpacity(0.38),
+                  backgroundColor: grey1,
+                )),
+      ),
+      onWillPop: () async {
+        MoveToBackground.moveTaskToBack();
+        return false;
+      });
+
+  // list of home tab items
+  List<BottomNavigationBarItem> getHomeTabItems(AppLocalizations? appLoc) =>
+      <BottomNavigationBarItem>[
+        // soapp (home)
+        const BottomNavigationBarItem(
+          activeIcon: AssetImgPngWidget('ic_home_1', width: 20),
+          icon: AssetImgPngWidget('ic_home_0', width: 20),
+          label: soapp,
+        ),
+
+        // discover (restaurants)
+        BottomNavigationBarItem(
+          activeIcon: const AssetImgPngWidget('ic_discover_1', width: 20),
+          icon: const AssetImgPngWidget('ic_discover_0', width: 20),
+          label: appLoc?.discover,
+        ),
+
+        // chat
+        BottomNavigationBarItem(
+          activeIcon: const AssetImgPngWidget('ic_chat_1', width: 20),
+          icon: const AssetImgPngWidget('ic_chat_0', width: 20),
+          label: appLoc?.chat,
+        ),
+
+        // appt
+        BottomNavigationBarItem(
+          activeIcon: const AssetImgPngWidget('ic_appt_1', width: 20),
+          icon: const AssetImgPngWidget('ic_appt_0', width: 20),
+          label: appLoc?.discover,
+        ),
+
+        // profile
+        BottomNavigationBarItem(
+          activeIcon: const AssetImgPngWidget('ic_profile_1', width: 20),
+          icon: const AssetImgPngWidget('ic_profile_0', width: 20),
+          label: appLoc?.profile,
+        ),
+      ];
 }
