@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     vm = Provider.of(context, listen: false);
     vm.homeTabController =
-        TabController(length: 5, initialIndex: 0, vsync: this);
+        TabController(length: 5, initialIndex: 1, vsync: this);
     vm.init();
 
     super.initState();
@@ -48,6 +48,8 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) => WillPopScope(
       child: Scaffold(
         body: TabBarView(
+          // disable blue animation on scroll end
+          physics: const BouncingScrollPhysics(),
           controller: vm.homeTabController,
           children: const [
             HomeTabScreen(),

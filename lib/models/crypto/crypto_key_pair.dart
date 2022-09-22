@@ -1,5 +1,3 @@
-import 'package:web3dart/credentials.dart';
-
 class CryptoKeyPair {
   final String privateKey;
   final String publicKey;

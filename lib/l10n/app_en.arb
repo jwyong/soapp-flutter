@@ -71,6 +71,18 @@
   "schedule": "schedule",
   "schedule_desc": "events & plans",
 
+  "discover": "discover",
+  "promotions": "promotions",
+  "nearby": "nearby",
+  "popular": "popular",
+  "coffee": "coffee",
+  "dessert": "dessert",
+  "vegetarian": "vegetarian",
+  "local": "local",
+  "western": "western",
+  "fast_food": "fast food",
+  "asian": "asian",
+
   "crypto_wallet": "Crypto Wallet",
   "crypto_wallet_desc": "send & receive",
   "recover_wallet_title": "Recover Wallet",
