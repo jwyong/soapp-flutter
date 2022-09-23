@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     vm = Provider.of(context, listen: false);
     vm.homeTabController =
-        TabController(length: 5, initialIndex: 1, vsync: this);
+        TabController(length: 5, initialIndex: 2, vsync: this);
     vm.init();
 
     super.initState();

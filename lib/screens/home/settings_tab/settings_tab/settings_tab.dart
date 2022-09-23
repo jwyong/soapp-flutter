@@ -7,6 +7,7 @@ class SettingsTabScreen extends BaseStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return const SafeArea(child: Center(child: Text("SettingsTabScreen")));
   }
 }

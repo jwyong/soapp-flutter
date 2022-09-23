@@ -57,6 +57,7 @@ class DiscoverTabScreen extends BaseStatelessWidget {
           Column(children: [
             // cuisine chips list
             SingleChildScrollView(
+              //PageScrollPhysics
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 child: Row(children: [
