@@ -1,6 +1,6 @@
 # Soapp - Extending Possibilities
 
-All-in-one app for chat, appointments and much more.
+All-in-one app for chat, appointments and much more. A prototype written in Flutter Dart language in order to experiment on the feasibility of a custom XMPP Erlang backend connected to Flutter frontend. At the time of writing, there wasn't a Flutter library which handles XMPP (much less a highly customised backend), so the use of MethodChannels were required to communicate with native Smack (Android) and XMPP Framework (iOS) libraries.
 
 ## About Soapp
 
